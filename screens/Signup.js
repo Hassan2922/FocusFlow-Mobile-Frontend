@@ -1,16 +1,58 @@
-import { View, Text, Image, Pressable, TextInput, TouchableOpacity,Linking } from 'react-native'
+import { View, Text, Image, Pressable, TextInput, TouchableOpacity, Linking } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from "react-native-safe-area-context";
-//import { SafeAreaView } from 'react-native';
-import COLORS from '../constants/colors';
 import { Ionicons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox"
 import Button from '../components/Button';
-
+import COLORS from '../constants/colors';
 
 const Signup = ({ navigation }) => {
+    const [formData, setFormData] = useState({
+        email: '',
+        firstName: '',
+        lastName: '',
+        phoneNumber: '',
+        password: '',
+        confirmPassword: '',
+        agreeToTerms: false,
+    });
+
     const [isPasswordShown, setIsPasswordShown] = useState(false);
-    const [isChecked, setIsChecked] = useState(false);
+
+    const handleInputChange = (fieldName, value) => {
+        setFormData(prevData => ({
+            ...prevData,
+            [fieldName]: value,
+        }));
+    };
+
+    const handleSubmit = () => {
+        // Construct JSON payload from formData
+        const payload = {
+            email: formData.email,
+            password: formData.password,
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+        };
+
+        // Now you can send the payload to your API endpoint using fetch or any other method
+        // For example:
+        fetch('192.168.9.40:3000/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Handle the response from the server
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    };
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.gray }}>
             <View style={{ flex: 1, marginHorizontal: 22 }}>
@@ -171,6 +213,7 @@ const Signup = ({ navigation }) => {
                                 width: "100%",
                                 color: COLORS.blue
                             }}
+                            onChangeText={(text) => handleInputChange('password', text)}
                         />
 
                         <TouchableOpacity
@@ -180,20 +223,22 @@ const Signup = ({ navigation }) => {
                                 right: 12
                             }}
                         >
-                            {
-                                isPasswordShown == true ? (
-                                    <Ionicons name="eye-off" size={24} color={COLORS.blue} />
-                                ) : (
-                                    <Ionicons name="eye" size={24} color={COLORS.blue} />
-                                )
-                            }
-
+                            {isPasswordShown ? (
+                                <Ionicons name="eye-off" size={24} color={COLORS.blue} />
+                            ) : (
+                                <Ionicons name="eye" size={24} color={COLORS.blue} />
+                            )}
                         </TouchableOpacity>
                     </View>
                 </View>
-                 
+
                 <View style={{ marginBottom: 12 }}>
-                    
+                    <Text style={{
+                        fontSize: 16,
+                        fontWeight: 400,
+                        marginVertical: 8,
+                        color: COLORS.blue
+                    }}>Confirm Password</Text>
 
                     <View style={{
                         width: "100%",
@@ -213,6 +258,7 @@ const Signup = ({ navigation }) => {
                                 width: "100%",
                                 color: COLORS.blue
                             }}
+                            onChangeText={(text) => handleInputChange('confirmPassword', text)}
                         />
 
                         <TouchableOpacity
@@ -222,18 +268,14 @@ const Signup = ({ navigation }) => {
                                 right: 12
                             }}
                         >
-                            {
-                                isPasswordShown == true ? (
-                                    <Ionicons name="eye-off" size={24} color={COLORS.blue} />
-                                ) : (
-                                    <Ionicons name="eye" size={24} color={COLORS.blue} />
-                                )
-                            }
-
+                            {isPasswordShown ? (
+                                <Ionicons name="eye-off" size={24} color={COLORS.blue} />
+                            ) : (
+                                <Ionicons name="eye" size={24} color={COLORS.blue} />
+                            )}
                         </TouchableOpacity>
                     </View>
                 </View>
-                
 
                 <View style={{
                     flexDirection: 'row',
@@ -241,20 +283,17 @@ const Signup = ({ navigation }) => {
                 }}>
                     <Checkbox
                         style={{ marginRight: 8 }}
-                        value={isChecked}
-                        onValueChange={setIsChecked}
-                        color={isChecked ? COLORS.blue : undefined}
-                        
+                        value={formData.agreeToTerms}
+                        onValueChange={(value) => handleInputChange('agreeToTerms', value)}
+                        color={formData.agreeToTerms ? COLORS.blue : undefined}
                     />
-
-                    <Text style={{
-                        color: COLORS.blue
-                    }}>I agree to the terms and conditions</Text>
+                    <Text style={{ color: COLORS.blue }}>I agree to the terms and conditions</Text>
                 </View>
 
                 <Button
                     title="Sign Up"
                     filled
+                    onPress={handleSubmit}
                     style={{
                         marginTop: 18,
                         marginBottom: 4,
@@ -368,7 +407,7 @@ const Signup = ({ navigation }) => {
                 </View>
             </View>
         </SafeAreaView>
-    )
+    );
 }
 
-export default Signup
+export default Signup;

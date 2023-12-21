@@ -1,4 +1,4 @@
-import { View, Text, Image, Pressable, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, Image, Pressable, TextInput, TouchableOpacity,Linking } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from "react-native-safe-area-context";
 //import { SafeAreaView } from 'react-native';
@@ -249,7 +249,7 @@ const Signup = ({ navigation }) => {
 
                     <Text style={{
                         color: COLORS.blue
-                    }}>I aggree to the terms and conditions</Text>
+                    }}>I agree to the terms and conditions</Text>
                 </View>
 
                 <Button
@@ -318,7 +318,7 @@ const Signup = ({ navigation }) => {
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        onPress={() => console.log("Pressed")}
+                         onPress={() => Linking.openURL('http://localhost:3000/auth/google')}
                         style={{
                             flex: 1,
                             alignItems: 'center',

@@ -37,7 +37,7 @@ const Signup = ({ navigation }) => {
 
         // Now you can send the payload to your API endpoint using fetch or any other method
         // For example:
-        fetch('192.168.9.40:3000/register', {
+        fetch('http://192.168.172.61:3000/auth/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -95,6 +95,7 @@ const Signup = ({ navigation }) => {
                                 width: "100%",
                                 color: COLORS.blue
                             }}
+                            onChangeText={(text) => handleInputChange('email', text)}
                         />
                     </View>
                 </View>
@@ -125,6 +126,7 @@ const Signup = ({ navigation }) => {
         paddingLeft: 22,
         color: COLORS.blue
       }}
+      onChangeText={(text) => handleInputChange('firstName', text)}
     />
 
     <TextInput
@@ -139,6 +141,7 @@ const Signup = ({ navigation }) => {
         paddingLeft: 22,
         color: COLORS.blue
       }}
+      onChangeText={(text) => handleInputChange('lastName', text)}
     />
   </View>
 </View>

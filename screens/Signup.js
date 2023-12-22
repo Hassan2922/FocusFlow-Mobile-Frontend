@@ -37,7 +37,7 @@ const Signup = ({ navigation }) => {
 
         // Now you can send the payload to your API endpoint using fetch or any other method
         // For example:
-        fetch('http://192.168.172.61:3000/auth/register', {
+        fetch('http://192.168.162.183:3000/auth/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

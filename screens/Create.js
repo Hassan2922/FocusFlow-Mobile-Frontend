@@ -48,7 +48,7 @@ export default class App extends Component {
         dateNameStyle: { color: '#00CCFF' }, // Set text color for the day name
         dateNumberStyle: { color: '#00CCFF' }, // Set text color for the day number
         // Random color...
-        //dateContainerStyle: { backgroundColor: `#${(`#00000${(Math.random() * (1 << 24) | 0).toString(16)}`).slice(-6)}` },
+        //dateContainerStyle: { backgroundColor: #${(#00000${(Math.random() * (1 << 24) | 0).toString(16)}).slice(-6)} },
       });
 
       let dots = [];
@@ -64,7 +64,7 @@ export default class App extends Component {
     }
 
     this.state = {
-      selectedDate: startDate,
+      selectedDate: undefined,
       customDatesStyles,
       markedDates,
       startDate,
@@ -101,8 +101,9 @@ export default class App extends Component {
   toggleModal = () => {
     this.setState({ isModalVisible: !this.state.isModalVisible });
   }
+
   addActivity = () => {
-    const { selectedDate, newActivityText } = this.state;
+    const { selectedDate, newActivityText, newTimeText } = this.state;
   
     // Clone the markedDates array to avoid direct mutation
     const updatedMarkedDates = [...this.state.markedDates];
@@ -116,11 +117,14 @@ export default class App extends Component {
     if (selectedIndex === -1) {
       updatedMarkedDates.push({
         date: selectedDate.clone(),
-        events: [newActivityText],
+        events: [{ activity: newActivityText, time: newTimeText }],
       });
     } else {
       // If the selected date is found, update the events array
-      updatedMarkedDates[selectedIndex].events.push(newActivityText);
+      updatedMarkedDates[selectedIndex].events.push({
+        activity: newActivityText,
+        time: newTimeText,
+      });
     }
   
     // Update the state
@@ -128,6 +132,7 @@ export default class App extends Component {
       markedDates: updatedMarkedDates,
       isModalVisible: false,
       newActivityText: '',
+      newTimeText: '',
     });
   
     // Update the events for the selected date
@@ -137,13 +142,23 @@ export default class App extends Component {
   
     this.setState({ events: updatedEvents });
   }
+  
+  
+  
+
 
   render() {
     const eventsList = this.state.events.map((event, index) => (
-      <Text key={index} style={{ fontSize: 18, marginTop: 10,color:"#00CCFF" }}>
-        {event}
-      </Text>
+      <View key={index} style={{ marginTop: 10 }}>
+        <Text style={{ fontSize: 18, color: "#00CCFF" }}>
+          Activity: {event.activity}
+        </Text>
+        <Text style={{ fontSize: 18, color: "#00CCFF" }}>
+          Time: {event.time}
+        </Text>
+      </View>
     ));
+    
 
     //const eventScheduleSection = eventsList.length > 0 ? (
       const eventScheduleSection = (

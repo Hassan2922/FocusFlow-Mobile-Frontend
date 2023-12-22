@@ -64,7 +64,7 @@ export default class App extends Component {
     }
 
     this.state = {
-      selectedDate: undefined,
+      selectedDate: startDate,
       customDatesStyles,
       markedDates,
       startDate,
@@ -248,4 +248,3 @@ export default class App extends Component {
     );
   }
 }
-
